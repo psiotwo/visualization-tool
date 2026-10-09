@@ -15,7 +15,7 @@ interface SourceOption {
   supportsCachingPerCubeIri: boolean;
 }
 
-export const SOURCE_OPTIONS: SourceOption[] = [
+const DEFAULT_SOURCE_OPTIONS: SourceOption[] = [
   {
     value: `sparql+${PROD_DATA_SOURCE_URL}`,
     key: "Prod",
@@ -64,7 +64,21 @@ export const SOURCE_OPTIONS: SourceOption[] = [
     isTrusted: false,
     supportsCachingPerCubeIri: true,
   },
-].filter((d) => WHITELISTED_DATA_SOURCES.includes(d.key));
+];
+
+export const SOURCE_OPTIONS: SourceOption[] = [
+  ...DEFAULT_SOURCE_OPTIONS.filter((d) => WHITELISTED_DATA_SOURCES.includes(d.key)),
+  ...WHITELISTED_DATA_SOURCES.filter((url: string) => /^https?:\/\//.test(url)).map(
+    (url: string) => ({
+      key: url,
+      label: url,
+      url,
+      value: `sparql+${url}`,
+      isTrusted: false,
+      supportsCachingPerCubeIri: false,
+    })
+  ),
+];
 
 export const SOURCES_BY_KEY = keyBy(SOURCE_OPTIONS, (d) => d.key);
 export const SOURCES_BY_VALUE = keyBy(SOURCE_OPTIONS, (d) => d.value);

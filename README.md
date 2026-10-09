@@ -45,3 +45,13 @@ This project is free and open source software, licensed under the terms of the
 - Designed for Vercel and Docker deployments
 - Database migrations run automatically on production builds
 - Environment-specific configuration through environment variables
+
+`WHITELISTED_DATA_SOURCES` accepts built-in keys and custom HTTP(S) SPARQL URLs.
+Use `ENDPOINT` to select the default:
+
+```env
+WHITELISTED_DATA_SOURCES=["Prod","http://sparql-proxy:8080/sparql"]
+ENDPOINT=sparql+http://sparql-proxy:8080/sparql
+```
+
+Restart after changes; no rebuild is needed. This config is public; keep credentials in the proxy.
